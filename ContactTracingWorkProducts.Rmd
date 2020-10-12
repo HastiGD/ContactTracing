@@ -1,0 +1,133 @@
+---
+title: "Contact Tracing Database Report"
+author: "Hasti Gheibi Dehnashi, Audrey Jo, Thinh Lam"
+date: "10/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) #`echo = FALSE
+```
+The objective of this project is to design a database to support digital tools that will augment traditional contact tracing. Contact tracing is a necessary step for preventing COVID-19 until a coronavirus vaccine is developed. Traditional contact tracing is cumbersome work that relies heavily on the health service professional. Digital tools that support self-reporting and automated follow-ups can improve timeliness and efficiency in the contact tracing process. We have created a database that can support contact tracing and be used by epidemiologists studying the spread of the disease. In this report you will find the following documents describing the contact tracing database:
+
+# Table of Contents
+**UML Class Diagram**
+
+**ER Diagram**
+
+**Relational Schema**
+
+**Database Generation**
+
+**Use Cases**
+
+# UML Class Diagram
+![UMLConceptualClassDiagram](images/ContactTracingUMLClassDiagram.jpg)
+Figure 1. UML Conceptual Class Diagram of the contact tracing database
+
+View the UML Class Diagram [PDF](images/ContactTracingUMLClassDiagram.pdf), or view it in [LucidCharts](https://app.lucidchart.com/documents/view/531437ab-31e5-4e76-a52e-96927ff77e32)
+
+# Entity Relationship (ER) Diagram 
+![ERD](images/ERD.jpg)
+Figure 2. ER Diagram of the contact tracing database
+
+# Relational Schema
+View the relational schema [Google Doc](https://docs.google.com/document/d/1NMjmoAV1o2M1eEd9LXyGxg1LmjMiOR28-jAlqOzXcZE/edit?usp=sharing) or [PDF](/Users/hastigheibidehnashi/DBMS/ContactTracing/images/RelationalSchema.pdf)
+
+By definition, a relational Schema is in BCNF if and only if it is in 3NF and every non-trivial Functional Dependency has a candidate key as its determinant. We designed our database such that each candidate key is used as a determinant. 
+ 
+Set of candidate keys = {ContactId, AddessId,EmployeeId, StatusId, ExposureId, InterviewId, OfficeId, TestCenterId, ResourceId, ServiceId, ItemId, SymptomId, TravelId, ContactSymptomId, ContactStatusId, TestId }
+
+<center>
+
+TravelId -> ContactId, AddressId, Name, StartDateTime, EndDateTime, Notified, Type
+ 
+ContactSymptomId -> Date, ContactId SymptomId
+ 
+SymptomId -> Symptom
+ 
+ContactStatusId-> ContactId, StatusId, EmployeeId, Date, SelfQuarantined
+ 
+StatusId -> Description
+ 
+ExposureId -> Level, Description
+ 
+EmployeeId -> FirstName, LastName, PhoneNumber, Email.
+ 
+OfficeId -> Name, AddressId, PhoneNumber
+ 
+TestCenterId -> Name, AddressId, PhoneNumber, LicenceNumber
+ 
+TestId -> TestCenterId, TesterId, Date, Result
+
+InterviewId -> EmployeeId, ContactId, OfficeId, InterviewType, DateTime, PatientPresent, InterviewNotes
+ 
+AddressId -> Street, City, State, Zipcode, Country
+ 
+ServiceId -> Name, Type, URL, PhoneNumber, AddressId
+ 
+ItemId -> Name, ServiceId, Quantity
+
+ResourceId ->Type , URL
+
+</center>
+ 
+No candidate keys are overlapping, or part of composite keys, therefore, all of the relations in the database are in BCNF.
+
+
+# Database Generation
+
+The database was created from the following SQL [data definition statements](code/DBDefinitionStatements.sql). Below we have shown descriptions of a few of the tables after they had been created. 
+
+![Contact](images/Contact.png)
+Figure 3a. Contact table
+
+![ContactStatus](images/ContactStatus.png)
+Figure 3b. ContactStatus table
+
+![ContactSymptom](images/ContactSymptom.png)
+Figure 3c. ContactSymptom table
+
+![Exposure](images/Exposure.png)
+Figure 3d. Exposure table
+
+![Interview](images/Interview.png)
+Figure 3e. Interview table
+
+![Essentials](images/Essentials.png)
+Figure 3f. Essentials table
+
+![Employee](images/Employee.png)
+Figure 3g. Employee Table
+
+![Address](images/Address.png)
+Figure 3h. Address Table
+
+![Office](images/Office.png)
+Figure 3i. Office Table
+
+# Use Cases
+
+We selected 5 use cases to showcase how the database can be utilized for automated contact tracing, they are discussed below.
+
+1. Enable automated notification to contacts who opt-in to being notified
+2. Allow notifications to be tailored to the likelihood of exposure based on the risk level
+3. Enable automatic prioritization of self reported symptom for immediate contact notification to suggest testing, and health department notification
+4. Find the contacts which have taken tests and determine the type of test
+5. Send daily automated monitoring checks to Self-Quarantined Patient
+
+The queries are available for viewing in [this](code/UseCaseQueries.sql) .sql file
+
+View each output below:
+
+1.[Use Case 1](output/UseCase1.xml.html)
+
+2.[Use Case 2](output/UseCase2.xml.html)
+
+3.[Use Case 3](output/UseCase3.xml.html)
+
+4.[Use Case 4](output/UseCase4.xml.html)
+
+5.[Use Case 5](output/UseCase5.xml.html)
+
+
